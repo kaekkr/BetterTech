@@ -1,13 +1,10 @@
 package dev.senior.bettertech.controller;
 
 import dev.senior.bettertech.model.Assignment;
-import dev.senior.bettertech.repository.AssignmentRepository;
+import dev.senior.bettertech.service.StudentDashboardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -15,12 +12,10 @@ import java.util.List;
 @RequestMapping("/api/student/dashboard")
 @RequiredArgsConstructor
 public class StudentDashboardController {
-    private final AssignmentRepository assignmentRepository;
+    private final StudentDashboardService dashboardService;
 
     @GetMapping
     public ResponseEntity<List<Assignment>> getUpcomingAssignments(@RequestParam Long studentId) {
-        List<Assignment> assignments = assignmentRepository.findAll(); // Customize query for student
-        return ResponseEntity.ok(assignments);
+        return ResponseEntity.ok(dashboardService.getUpcomingAssignments(studentId));
     }
 }
-

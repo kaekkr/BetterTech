@@ -23,6 +23,9 @@ public class Submission {
     @Column
     private boolean feedbackApproved;
 
+    @Column
+    private String grade;
+
     @Column(nullable = false)
     private LocalDateTime submissionTime;
 
