@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @Setter
@@ -20,6 +22,9 @@ public class Submission {
 
     @Column
     private boolean feedbackApproved;
+
+    @Column(nullable = false)
+    private LocalDateTime submissionTime;
 
     @ManyToOne
     @JoinColumn(name = "assignment_id", nullable = false)
