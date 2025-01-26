@@ -1,6 +1,7 @@
 package dev.senior.bettertech.controller;
 
 import dev.senior.bettertech.model.Subject;
+import dev.senior.bettertech.model.User;
 import dev.senior.bettertech.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -10,22 +11,27 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/admin")
 @RequiredArgsConstructor
 public class AdminController {
+
     private final AdminService adminService;
 
+    // Create a new subject
     @PostMapping("/subjects")
     public ResponseEntity<Subject> createSubject(@RequestBody Subject subject) {
-        return ResponseEntity.ok(adminService.createSubject(subject));
+        Subject savedSubject = adminService.createSubject(subject);
+        return ResponseEntity.ok(savedSubject);
     }
 
-    @PutMapping("/subjects/{id}/assign-teacher")
-    public ResponseEntity<String> assignTeacher(@PathVariable Long id, @RequestParam Long teacherId) {
-        adminService.assignTeacher(id, teacherId);
+    // Assign a teacher to a subject
+    @PutMapping("/subjects/{subjectId}/assign-teacher")
+    public ResponseEntity<String> assignTeacher(@PathVariable Long subjectId, @RequestParam Long teacherId) {
+        adminService.assignTeacherToSubject(subjectId, teacherId);
         return ResponseEntity.ok("Teacher assigned successfully!");
     }
 
-    @DeleteMapping("/users/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
-        adminService.deleteUser(id);
+    // Delete a user (student/teacher)
+    @DeleteMapping("/users/{userId}")
+    public ResponseEntity<String> deleteUser(@PathVariable Long userId) {
+        adminService.deleteUser(userId);
         return ResponseEntity.ok("User deleted successfully!");
     }
 }

@@ -2,7 +2,7 @@ package dev.senior.bettertech.controller;
 
 import dev.senior.bettertech.model.Assignment;
 import dev.senior.bettertech.model.Submission;
-import dev.senior.bettertech.service.StudentService;
+import dev.senior.bettertech.service.AssignmentService;
 import dev.senior.bettertech.service.SubmissionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,24 +14,28 @@ import java.util.List;
 @RequestMapping("/api/student")
 @RequiredArgsConstructor
 public class StudentController {
-    private final StudentService studentService;
+
+    private final AssignmentService assignmentService;
     private final SubmissionService submissionService;
 
+    // Get all assignments for a student
     @GetMapping("/assignments")
     public ResponseEntity<List<Assignment>> getAssignments() {
-        return ResponseEntity.ok(studentService.getAssignments());
+        List<Assignment> assignments = assignmentService.getAllAssignments();
+        return ResponseEntity.ok(assignments);
     }
 
-    @PostMapping("/assignments/{id}/submit")
-    public ResponseEntity<String> submitAssignment(@PathVariable Long id, @RequestBody Submission submission) {
-        studentService.submitAssignment(id, submission);
-        return ResponseEntity.ok("Assignment submitted successfully!");
+    // Submit an assignment
+    @PostMapping("/assignments/{assignmentId}/submit")
+    public ResponseEntity<Submission> submitAssignment(@PathVariable Long assignmentId, @RequestBody Submission submission) {
+        Submission savedSubmission = submissionService.createSubmission(assignmentId, submission);
+        return ResponseEntity.ok(savedSubmission);
     }
 
-    @GetMapping("/feedback")
-    public ResponseEntity<List<Submission>> getFeedbackForStudent(@RequestParam Long studentId) {
-        return ResponseEntity.ok(submissionService.getSubmissionsForStudent(studentId));
+    // View feedback for a specific submission
+    @GetMapping("/submissions/{submissionId}")
+    public ResponseEntity<Submission> getSubmissionFeedback(@PathVariable Long submissionId) {
+        Submission submission = submissionService.getSubmissionById(submissionId);
+        return ResponseEntity.ok(submission);
     }
-
-
 }

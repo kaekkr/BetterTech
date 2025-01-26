@@ -18,14 +18,15 @@ public class AdminService {
         return subjectRepository.save(subject);
     }
 
-    public void assignTeacher(Long subjectId, Long teacherId) {
+    // Assign a teacher to a subject
+    public void assignTeacherToSubject(Long subjectId, Long teacherId) {
         Subject subject = subjectRepository.findById(subjectId)
                 .orElseThrow(() -> new RuntimeException("Subject not found"));
         User teacher = userRepository.findById(teacherId)
                 .orElseThrow(() -> new RuntimeException("Teacher not found"));
 
         if (!teacher.getRole().equals(Role.ROLE_TEACHER)) {
-            throw new RuntimeException("User is not a teacher");
+            throw new IllegalArgumentException("User is not a teacher");
         }
 
         subject.setTeacher(teacher);
