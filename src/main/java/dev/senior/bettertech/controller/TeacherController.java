@@ -2,6 +2,7 @@ package dev.senior.bettertech.controller;
 
 import dev.senior.bettertech.model.Assignment;
 import dev.senior.bettertech.model.Submission;
+import dev.senior.bettertech.service.SubmissionService;
 import dev.senior.bettertech.service.TeacherService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TeacherController {
     private final TeacherService teacherService;
+    private final SubmissionService submissionService;
 
     @PostMapping("/assignments")
     public ResponseEntity<Assignment> createAssignment(@RequestBody Assignment assignment) {
@@ -26,9 +28,13 @@ public class TeacherController {
         return ResponseEntity.ok(teacherService.getAllSubmissions());
     }
 
-    @PostMapping("/submissions/{id}/feedback")
-    public ResponseEntity<String> provideFeedback(@PathVariable Long id, @RequestParam String feedback, @RequestParam String grade) {
-        teacherService.provideFeedback(id, feedback, grade);
-        return ResponseEntity.ok("Feedback provided successfully!");
+    @PutMapping("/submissions/{id}/feedback")
+    public ResponseEntity<String> provideOrApproveFeedback(
+            @PathVariable Long id,
+            @RequestParam String feedback,
+            @RequestParam(required = false, defaultValue = "true") boolean approved) {
+        submissionService.updateFeedback(id, feedback, approved);
+        return ResponseEntity.ok("Feedback updated successfully!");
     }
+
 }

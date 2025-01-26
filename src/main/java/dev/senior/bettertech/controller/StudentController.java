@@ -3,6 +3,7 @@ package dev.senior.bettertech.controller;
 import dev.senior.bettertech.model.Assignment;
 import dev.senior.bettertech.model.Submission;
 import dev.senior.bettertech.service.StudentService;
+import dev.senior.bettertech.service.SubmissionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StudentController {
     private final StudentService studentService;
+    private final SubmissionService submissionService;
 
     @GetMapping("/assignments")
     public ResponseEntity<List<Assignment>> getAssignments() {
@@ -25,4 +27,11 @@ public class StudentController {
         studentService.submitAssignment(id, submission);
         return ResponseEntity.ok("Assignment submitted successfully!");
     }
+
+    @GetMapping("/feedback")
+    public ResponseEntity<List<Submission>> getFeedbackForStudent(@RequestParam Long studentId) {
+        return ResponseEntity.ok(submissionService.getSubmissionsForStudent(studentId));
+    }
+
+
 }

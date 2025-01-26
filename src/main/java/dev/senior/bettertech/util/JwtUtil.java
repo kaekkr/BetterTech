@@ -1,5 +1,6 @@
 package dev.senior.bettertech.util;
 
+import dev.senior.bettertech.BetterTechApplication;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -13,7 +14,7 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-    private static final String SECRET_KEY = "kZlCiT1RQgBx5ZJ9khg0yYX5XT7Ox5CdF1GpPbK0Cz4";
+    private static final String SECRET_KEY = BetterTechApplication.dotenv.get("SECRET_KEY");
 
     private Key getSigningKey() {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
