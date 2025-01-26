@@ -1,5 +1,6 @@
 package dev.senior.bettertech.controller;
 
+import dev.senior.bettertech.dto.SubjectDTO;
 import dev.senior.bettertech.model.Subject;
 import dev.senior.bettertech.model.User;
 import dev.senior.bettertech.service.AdminService;
@@ -17,8 +18,8 @@ public class AdminController {
     private final SubjectService subjectService;
 
     @PostMapping("/subjects")
-    public ResponseEntity<Subject> createSubject(@RequestBody Subject subjectRequest) {
-        Subject subject = subjectService.createSubject(subjectRequest);
+    public ResponseEntity<Subject> createSubject(@RequestBody SubjectDTO subjectDTO) {
+        Subject subject = subjectService.createSubject(subjectDTO);
         return ResponseEntity.ok(subject);
     }
 

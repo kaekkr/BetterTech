@@ -1,7 +1,9 @@
 package dev.senior.bettertech.service;
 
 import dev.senior.bettertech.model.Assignment;
+import dev.senior.bettertech.model.Subject;
 import dev.senior.bettertech.repository.AssignmentRepository;
+import dev.senior.bettertech.repository.SubjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,12 +13,21 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AssignmentService {
     private final AssignmentRepository assignmentRepository;
+    private final SubjectRepository subjectRepository;
 
     public List<Assignment> getAllAssignments() {
         return assignmentRepository.findAll();
     }
 
     public Assignment createAssignment(Assignment assignment) {
+        // Ensure the Subject reference in Assignment is correct
+        if (assignment.getSubject() != null && assignment.getSubject().getId() != null) {
+            Subject subject = subjectRepository.findById(assignment.getSubject().getId())
+                    .orElseThrow(() -> new RuntimeException("Subject not found"));
+            assignment.setSubject(subject);
+        }
+
+        // Save the assignment without redundant references
         return assignmentRepository.save(assignment);
     }
 

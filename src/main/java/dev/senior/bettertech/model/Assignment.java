@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -29,6 +30,6 @@ public class Assignment {
     private Subject subject;
 
     @OneToMany(mappedBy = "assignment", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Submission> submissions;
+    private List<Submission> submissions = new ArrayList<>(); // Initialize the list
 }
 
