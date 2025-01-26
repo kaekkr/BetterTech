@@ -3,6 +3,7 @@ package dev.senior.bettertech.controller;
 import dev.senior.bettertech.model.Subject;
 import dev.senior.bettertech.model.User;
 import dev.senior.bettertech.service.AdminService;
+import dev.senior.bettertech.service.SubjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,12 +14,12 @@ import org.springframework.web.bind.annotation.*;
 public class AdminController {
 
     private final AdminService adminService;
+    private final SubjectService subjectService;
 
-    // Create a new subject
     @PostMapping("/subjects")
-    public ResponseEntity<Subject> createSubject(@RequestBody Subject subject) {
-        Subject savedSubject = adminService.createSubject(subject);
-        return ResponseEntity.ok(savedSubject);
+    public ResponseEntity<Subject> createSubject(@RequestBody Subject subjectRequest) {
+        Subject subject = subjectService.createSubject(subjectRequest);
+        return ResponseEntity.ok(subject);
     }
 
     // Assign a teacher to a subject

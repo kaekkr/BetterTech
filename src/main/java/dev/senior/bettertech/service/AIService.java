@@ -1,7 +1,6 @@
 package dev.senior.bettertech.service;
 
-import dev.senior.bettertech.BetterTechApplication;
-import io.github.cdimascio.dotenv.Dotenv;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -10,10 +9,10 @@ import java.util.Map;
 
 @Service
 public class AIService {
-
     private final RestTemplate restTemplate = new RestTemplate();
-    private final String OPENAI_API_KEY = BetterTechApplication.dotenv.get("OPENAI_API_KEY");
-    private final String OPENAI_API_URL = "https://api.openai.com/v1/completions";
+
+    @Value("${OPEN_AI_KEY}")
+    private String openAIKey;
 
     public String generateFeedback(String submissionContent) {
         String prompt = "Provide detailed feedback for the following submission:\n\n" + submissionContent;
@@ -25,10 +24,11 @@ public class AIService {
         requestBody.put("temperature", 0.7);
 
         Map<String, String> headers = Map.of(
-                "Authorization", "Bearer " + OPENAI_API_KEY,
+                "Authorization", "Bearer " + openAIKey,
                 "Content-Type", "application/json"
         );
 
-        return restTemplate.postForObject(OPENAI_API_URL, Map.of("body", requestBody, "headers", headers), String.class);
+        String openAIUrl = "https://api.openai.com/v1/completions";
+        return restTemplate.postForObject(openAIUrl, Map.of("body", requestBody, "headers", headers), String.class);
     }
 }
