@@ -16,6 +16,10 @@ public class AssignmentService {
         return assignmentRepository.findAll();
     }
 
+    public Assignment createAssignment(Assignment assignment) {
+        return assignmentRepository.save(assignment);
+    }
+
     public Assignment updateAssignment(Long id, Assignment updatedAssignment) {
         Assignment assignment = assignmentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Assignment not found"));

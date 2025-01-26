@@ -1,8 +1,11 @@
 package dev.senior.bettertech.controller;
 
 import dev.senior.bettertech.model.Assignment;
+import dev.senior.bettertech.model.Subject;
 import dev.senior.bettertech.model.Submission;
 import dev.senior.bettertech.service.AssignmentService;
+import dev.senior.bettertech.service.StudentService;
+import dev.senior.bettertech.service.SubjectService;
 import dev.senior.bettertech.service.SubmissionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +20,13 @@ public class StudentController {
 
     private final AssignmentService assignmentService;
     private final SubmissionService submissionService;
+    private final SubjectService subjectService;
+
+    @GetMapping("/subjects")
+    public ResponseEntity<List<Subject>> getSubjects(@RequestParam Long studentId) {
+        List<Subject> subjects = subjectService.getSubjectsForStudent(studentId);
+        return ResponseEntity.ok(subjects);
+    }
 
     // Get all assignments for a student
     @GetMapping("/assignments")

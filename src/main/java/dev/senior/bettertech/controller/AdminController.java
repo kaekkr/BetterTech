@@ -22,9 +22,9 @@ public class AdminController {
     }
 
     // Assign a teacher to a subject
-    @PutMapping("/subjects/{subjectId}/assign-teacher")
-    public ResponseEntity<String> assignTeacher(@PathVariable Long subjectId, @RequestParam Long teacherId) {
-        adminService.assignTeacherToSubject(subjectId, teacherId);
+    @PutMapping("/subjects/{id}/assign-teacher")
+    public ResponseEntity<String> assignTeacher(@PathVariable Long id, @RequestParam Long teacherId) {
+        adminService.assignTeacherToSubject(id, teacherId);
         return ResponseEntity.ok("Teacher assigned successfully!");
     }
 
@@ -33,5 +33,11 @@ public class AdminController {
     public ResponseEntity<String> deleteUser(@PathVariable Long userId) {
         adminService.deleteUser(userId);
         return ResponseEntity.ok("User deleted successfully!");
+    }
+
+    @PutMapping("/subjects/{id}/assign-student")
+    public ResponseEntity<String> assignStudent(@PathVariable Long id, @RequestParam Long studentId) {
+        adminService.assignStudentToSubject(id, studentId);
+        return ResponseEntity.ok("Student assigned successfully!");
     }
 }

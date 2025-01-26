@@ -1,6 +1,9 @@
 package dev.senior.bettertech.controller;
 
+import dev.senior.bettertech.model.Assignment;
 import dev.senior.bettertech.model.Submission;
+import dev.senior.bettertech.service.AssignmentService;
+import dev.senior.bettertech.service.FeedbackService;
 import dev.senior.bettertech.service.SubmissionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +17,20 @@ import java.util.List;
 public class TeacherController {
 
     private final SubmissionService submissionService;
+    private final AssignmentService assignmentService;
+    private final FeedbackService feedbackService;
+
+    @PutMapping("/submissions/{id}/feedback")
+    public ResponseEntity<String> approveFeedback(@PathVariable Long id, @RequestParam String feedback) {
+        feedbackService.approveFeedback(id, feedback);
+        return ResponseEntity.ok("Feedback approved successfully!");
+    }
+
+    @PostMapping("/assignments")
+    public ResponseEntity<Assignment> createAssignment(@RequestBody Assignment assignment) {
+        Assignment savedAssignment = assignmentService.createAssignment(assignment);
+        return ResponseEntity.ok(savedAssignment);
+    }
 
     // Retrieve all submissions for an assignment
     @GetMapping("/assignments/{assignmentId}/submissions")

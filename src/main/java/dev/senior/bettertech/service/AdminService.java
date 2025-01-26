@@ -33,6 +33,16 @@ public class AdminService {
         subjectRepository.save(subject);
     }
 
+    public void assignStudentToSubject(Long subjectId, Long studentId) {
+        Subject subject = subjectRepository.findById(subjectId)
+                .orElseThrow(() -> new RuntimeException("Subject not found"));
+        User student = userRepository.findById(studentId)
+                .orElseThrow(() -> new RuntimeException("Student not found"));
+
+        subject.getStudents().add(student);
+        subjectRepository.save(subject);
+    }
+
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
